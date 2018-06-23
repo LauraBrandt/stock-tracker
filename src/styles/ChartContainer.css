@@ -1,0 +1,158 @@
+.chart-container__title {
+  text-align: center;
+  margin: 0.4em 1em 0.8em 1em;
+  font-size: 1.65em;
+}
+
+.chart-controls {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 1em;
+}
+
+.chart-controls__period {
+  display: flex;
+  margin-right: 2em;
+}
+
+.chart-controls__period div {
+  color: #ccc;
+  margin-right: 0.3em;
+}
+
+.chart-controls__period button {
+  background-color: #555;
+  color: #dfdfdf;
+  border: none;
+  border-radius: 1px;
+  margin: 0 0.2em;
+  font-size: 0.8em;
+  font-family: 'Abel', sans-serif;
+  padding: 0.25em 0.7em;
+  cursor: pointer;
+}
+
+.chart-controls__period button:hover {
+  background-color: #666;
+}
+
+.chart-controls__period button:focus {
+  outline: none;
+  color: #f9f9f9;
+}
+
+.chart-controls__period button:active {
+  background-color: #777;
+}
+
+.chart-controls__period button.current {
+  background-color: #222;
+  cursor: default;
+}
+
+.chart-controls__date {
+  position: relative;
+}
+
+.chart_controls__date-error {
+  position: absolute;
+  top: -1.5em;
+  width: 100%;
+  text-align: center;
+  color: hsl(0, 80%, 60%);
+}
+
+.chart-controls__date label {
+  color: #ccc;
+  margin: 0 0.5em 0 1em;
+}
+
+.chart-controls__date input {
+  background: none;
+  color: #dfdfdf;
+  border: 1px solid #777;
+  border-radius: 1px;
+  padding: 0.2em 0.5em;
+  font-family: 'Abel', sans-serif;
+  font-size: 0.85em;
+}
+
+::-webkit-clear-button
+{
+  display: none; /* Hide the button */
+  -webkit-appearance: none; /* turn off default browser styling */
+}
+
+.chart-container__chart {
+  box-sizing: border-box;
+  overflow-y: hidden;
+  overflow-x: auto;
+  width: 90%;
+  margin: auto;
+  padding-left: 4em;
+}
+
+.sr-only {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  top: auto;
+  overflow: hidden;
+}
+
+@media (max-width: 850px) {
+  .chart-container__title {
+    margin: 0.3em 1em 0.6em 1em;
+    font-size: 1.55em;
+  }
+  .chart-controls {
+    flex-direction: column;
+    margin-bottom: 1.5em;
+  }
+  .chart-controls__period {
+    margin-right: 0;
+    margin-bottom: 0.7em;
+  }
+  .chart-controls__date input {
+    padding: 0.1em 0.3em;
+    font-size: 0.8em;
+  }
+  .chart_controls__date-error {
+    top: 1.7em;
+    padding-left: 1em;
+  }
+  .chart-container__chart {
+    width: 100%;
+    padding-left: 3em;
+  }
+}
+
+@media (max-width: 500px) {
+  .chart-container__title {
+    font-size: 1.4em;
+  }
+  .chart-controls__period div {
+    font-size: 0.9em;
+  }
+  .chart-controls__period button {
+    padding: 0.15em 0.6em;
+  }
+  .chart-controls__date label {
+    margin: 0 0.4em 0 0;
+    font-size: 0.9em;
+  }
+  .chart-controls__date label:nth-child(4) {
+    margin-left: 0.5em;
+  }
+  .chart-controls__date input {
+    width: 100px;
+  }
+  .chart-container__chart {
+    width: 105%;
+    padding: 0;
+    margin-right: -1em;
+  }
+}

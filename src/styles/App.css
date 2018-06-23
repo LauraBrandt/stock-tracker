@@ -1,0 +1,30 @@
+.app {
+  background-color: #333;
+  margin: 3%;
+  color: #f0f0f0;
+  border-radius: 2px;
+  padding: 1em;
+  font-family: 'Abel', sans-serif;
+  box-sizing: border-box;
+}
+
+.footer {
+  text-align: center;
+  color: #aaa;
+  margin: 1em;
+  box-sizing: border-box;
+}
+.footer a {
+  color: #ccc;
+  text-decoration: none;
+}
+
+@media (max-width: 450px) {
+  .app {
+    margin: 0;
+    width: 100%;
+  }
+  .footer {
+    margin: 0 0 1em 0;
+  }
+}
