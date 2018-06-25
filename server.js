@@ -28,7 +28,6 @@ io.on('connection', socket => {
   });
   
   socket.on('add', data => {
-    // validate data first
     data = data.toUpperCase();
     symbolController.addSymbol(data, symbolList => {
       io.emit('symbolList', symbolList);

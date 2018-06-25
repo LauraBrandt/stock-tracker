@@ -46,9 +46,21 @@ class StockList extends React.Component {
 
     if (this.props.stockSymbols.length === 100) return;
     
+    this.setState({ busy: true });
+
+    fetch(`https://api.iextrading.com/1.0/stock/${this.state.addValue}/company`)
+      .then(response => response.json())
+      .then(() => {
     this.props.socket.emit('add', this.state.addValue);
-    
-    this.setState({ addValue: '', busy: true });
+        this.setState({ addValue: '' });
+      })
+      .catch(err => {
+        if (err.constructor.name === 'SyntaxError') {
+          this.setState({ busy: false, error: "Unknown or incorrect code" });
+        } else {
+          console.log(err);
+        }
+      });
   }
 
   removeStock(e) {

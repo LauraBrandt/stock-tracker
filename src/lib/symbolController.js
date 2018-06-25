@@ -15,6 +15,9 @@ const symbolController = {
     Symbol.find({}, (err, symbols) => {
       if (err) return handleError(err);
       const symbolList = symbols.map(symbolObject => symbolObject.name);
+      if (symbolList.length === 100) {
+        return symbolList;
+      }
       
       const newSymbol = new Symbol({name: symbol});
       newSymbol.save((err, symbol) => {
