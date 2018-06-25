@@ -28,7 +28,7 @@ class StockList extends React.Component {
   }
 
   callFetch(stockSymbols) {
-    fetch(`https://api.iextrading.com/1.0/stock/market/batch?types=quote&symbols=${stockSymbols.join(',')}`)
+    fetch(`https://api.iextrading.com/1.0/stock/market/batch?types=company&symbols=${stockSymbols.join(',')}`)
       .then(response => response.json())
       .then(stocks => this.setState({ stocks, busy: false }))
       .catch(err => {
@@ -45,13 +45,13 @@ class StockList extends React.Component {
     e.preventDefault();
 
     if (this.props.stockSymbols.length === 100) return;
-    
+
     this.setState({ busy: true });
 
     fetch(`https://api.iextrading.com/1.0/stock/${this.state.addValue}/company`)
       .then(response => response.json())
       .then(() => {
-    this.props.socket.emit('add', this.state.addValue);
+        this.props.socket.emit('add', this.state.addValue);
         this.setState({ addValue: '' });
       })
       .catch(err => {
@@ -79,7 +79,7 @@ class StockList extends React.Component {
               <li className="stock__li" key={symbol}>
                 <Stock 
                   symbol={symbol}
-                  name={(stocks[symbol] && stocks[symbol].quote.companyName) || ''}
+                  name={(stocks[symbol] && stocks[symbol].company.companyName) || ''}
                   color={colors[i]}
                   handleRemove={this.removeStock}
                   disabled={busy}
