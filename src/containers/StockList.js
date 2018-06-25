@@ -11,7 +11,8 @@ class StockList extends React.Component {
     this.state = {
       error: '',
       addValue: '',
-      stocks: {}
+      stocks: {},
+      busy: false
     }
 
     this.callFetch = this.callFetch.bind(this);
@@ -29,8 +30,11 @@ class StockList extends React.Component {
   callFetch(stockSymbols) {
     fetch(`https://api.iextrading.com/1.0/stock/market/batch?types=quote&symbols=${stockSymbols.join(',')}`)
       .then(response => response.json())
-      .then(stocks => this.setState({ stocks }))
-      .catch(err => console.log(err));
+      .then(stocks => this.setState({ stocks, busy: false }))
+      .catch(err => {
+        console.log(err);
+        this.setState({ busy: false });
+      });
   }
 
   handleAddChange(e) {
@@ -44,15 +48,16 @@ class StockList extends React.Component {
     
     this.props.socket.emit('add', this.state.addValue);
     
-    this.setState({ addValue: '' });
+    this.setState({ addValue: '', busy: true });
   }
 
   removeStock(e) {
     this.props.socket.emit('remove', e.target.name);
+    this.setState({ busy: true });
   }
 
   render() {
-    const { error, addValue, stocks } = this.state;
+    const { error, addValue, stocks, busy } = this.state;
     const { stockSymbols, colors } = this.props;
     return (
       <div className="stock-list">
@@ -65,6 +70,7 @@ class StockList extends React.Component {
                   name={(stocks[symbol] && stocks[symbol].quote.companyName) || ''}
                   color={colors[i]}
                   handleRemove={this.removeStock}
+                  disabled={busy}
                 />
               </li>
             )}
@@ -76,6 +82,7 @@ class StockList extends React.Component {
             value={addValue}
             handleChange={this.handleAddChange}
             handleSubmit={this.addNew} 
+            disabled={busy}
           />
         }
       </div>

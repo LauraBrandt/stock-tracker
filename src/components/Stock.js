@@ -6,7 +6,14 @@ const Stock = props => {
     <div className="stock" style={{borderColor: props.color}}>
       <span className="stock__symbol">{props.symbol}</span>
       <span className="stock__name">{props.name}</span>
-      <button className="stock__remove" onClick={props.handleRemove} name={props.symbol}>&times;</button>
+      <button 
+        className="stock__remove" 
+        onClick={props.disabled ? e => e.preventDefault() : props.handleRemove}
+        name={props.symbol}
+        className={`stock__remove${props.disabled ? ' disabled' : ''}`}
+      >
+        &times;
+      </button>
     </div>
   );
 }

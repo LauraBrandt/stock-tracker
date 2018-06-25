@@ -54,6 +54,17 @@
   text-shadow: 0 0 1px hsl(0, 70%, 70%);
 }
 
+.stock__remove.disabled,
+.stock__remove.disabled:hover,
+.stock__remove.disabled:active,
+.stock__remove.disabled:focus {
+  color: hsl(0, 10%, 50%);
+  cursor: default;
+  outline: none;
+  text-shadow: none;
+  transform: none;
+}
+
 .add-stock {
   color: #000;
   border-color: #aaa;
@@ -65,6 +76,10 @@
   font-family: 'Abel', sans-serif;
   padding: 0.39em 0.8em;
   width: 180px;
+}
+
+.add-stock input:disabled {
+  background-color: #ccc;
 }
 
 .add-stock button {
@@ -88,6 +103,15 @@
 .add-stock button:focus {
   outline: none;
   box-shadow: 0 0 8px 0 hsl(100, 60%, 50%);
+}
+.add-stock button.disabled, 
+.add-stock button.disabled:hover,
+.add-stock button.disabled:active,
+.add-stock button.disabled:focus {
+  background-color: hsl(100, 25%, 40%);
+  box-shadow: none;
+  outline: none;
+  cursor: default;
 }
 
 .add-stock p {
