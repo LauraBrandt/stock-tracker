@@ -12,7 +12,7 @@ class StockList extends React.Component {
       error: '',
       addValue: '',
       stocks: {},
-      busy: false
+      busy: true
     }
 
     this.callFetch = this.callFetch.bind(this);

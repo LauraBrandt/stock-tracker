@@ -17,7 +17,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.state.socket.emit('get', '');
+    this.state.socket.emit('get', null);
 
     this.state.socket.on("symbolList", stockSymbols => {
       if (stockSymbols.length > 0) {
@@ -38,7 +38,7 @@ class App extends React.Component {
         <ChartContainer stockSymbols={stockSymbols} colors={colors}/>
         <StockList stockSymbols={stockSymbols} colors={colors} socket={socket}/>
         <footer className="footer">
-          <div>Data provided for free by IEX. View <a href="https://iextrading.com/api-exhibit-a/">IEX’s Terms of Use</a>.</div>
+          <div>Data provided for free by <a href="https://iextrading.com/developer">IEX</a>. View <a href="https://iextrading.com/api-exhibit-a/">IEX’s Terms of Use</a>.</div>
           <div>Designed and coded by <a href="https://github.com/LauraBrandt">Laura Brandt</a></div>
         </footer>
       </div>

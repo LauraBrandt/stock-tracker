@@ -18,7 +18,7 @@ const symbolController = {
       if (symbolList.length === 100) {
         return symbolList;
       }
-      
+
       const newSymbol = new Symbol({name: symbol});
       newSymbol.save((err, symbol) => {
         if (err) return handleError(err);
