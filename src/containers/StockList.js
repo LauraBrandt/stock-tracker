@@ -82,7 +82,7 @@ class StockList extends React.Component {
 
   render() {
     const { error, addValue, prices, busy } = this.state;
-    const { stockSymbols, colors } = this.props;
+    const { stockSymbols, colors, allStockSymbols } = this.props;
     return (
       <div className="stock-list">
         <div>
@@ -106,6 +106,7 @@ class StockList extends React.Component {
             handleChange={this.handleAddChange}
             handleSubmit={this.addNew} 
             disabled={busy}
+            allStockSymbols={allStockSymbols}
           />
         }
       </div>

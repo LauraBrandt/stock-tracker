@@ -11,6 +11,7 @@ const AddStock = props => {
           value={props.value} 
           onChange={props.handleChange} 
           disabled={props.disabled}
+          list="symbols"
         />
         <button type="submit" className={props.disabled ? 'disabled' : ''}>
           &#43;&nbsp;&nbsp;Add new
@@ -18,6 +19,11 @@ const AddStock = props => {
       </form>
       <p>Syncs in realtime across clients</p>
       {props.error && <div className="error">{props.error}</div>}
+      <datalist id="symbols">
+        {props.allStockSymbols.map(symbolObject => 
+          <option key={symbolObject.symbol} value={symbolObject.symbol} />
+        )}
+      </datalist>
     </div>
   );
 }
