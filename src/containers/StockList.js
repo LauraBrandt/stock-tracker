@@ -28,9 +28,9 @@ class StockList extends React.Component {
 
   callFetch(stockSymbols) {
     fetch(`https://api.iextrading.com/1.0/stock/market/batch?types=quote&symbols=${stockSymbols.join(',')}`)
-        .then(response => response.json())
-        .then(stocks => this.setState({ stocks }))
-        .catch(err => console.log(err));
+      .then(response => response.json())
+      .then(stocks => this.setState({ stocks }))
+      .catch(err => console.log(err));
   }
 
   handleAddChange(e) {
@@ -40,16 +40,15 @@ class StockList extends React.Component {
   addNew(e) {
     e.preventDefault();
 
-    this.setState({ addValue: '' });
-    
     if (this.props.stockSymbols.length === 100) return;
-
-    // eventually set 'adding' to true, so that form is disabled until finished adding
     
+    this.props.socket.emit('add', this.state.addValue);
+    
+    this.setState({ addValue: '' });
   }
 
   removeStock(e) {
-    console.log('about to remove', e.target.name)
+    this.props.socket.emit('remove', e.target.name);
   }
 
   render() {
@@ -63,7 +62,7 @@ class StockList extends React.Component {
               <li className="stock__li" key={symbol}>
                 <Stock 
                   symbol={symbol}
-                  name={stocks[symbol].quote.companyName}
+                  name={(stocks[symbol] && stocks[symbol].quote.companyName) || ''}
                   color={colors[i]}
                   handleRemove={this.removeStock}
                 />
