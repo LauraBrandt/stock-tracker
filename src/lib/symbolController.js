@@ -1,9 +1,11 @@
 const Symbol = require('../../models/symbols');
 
+const handleError = err => console.log(err);
+
 const symbolController = {
   getSymbols: cb => {
     Symbol.find({}, (err, symbols) => {
-      if (err) return handleError(err); // todo
+      if (err) return handleError(err);
       const symbolList = symbols.map(symbolObject => symbolObject.name);
       cb(symbolList);
     });
@@ -11,12 +13,12 @@ const symbolController = {
 
   addSymbol: (symbol, cb) => {
     Symbol.find({}, (err, symbols) => {
-      if (err) return handleError(err); // todo
+      if (err) return handleError(err);
       const symbolList = symbols.map(symbolObject => symbolObject.name);
       
       const newSymbol = new Symbol({name: symbol});
       newSymbol.save((err, symbol) => {
-        if (err) return handleError(err); // todo
+        if (err) return handleError(err);
         symbolList.push(symbol.name);
         cb(symbolList);
       });
@@ -25,18 +27,17 @@ const symbolController = {
 
   removeSymbol: (symbol, cb) => {
     Symbol.find({}, (err, symbols) => {
-      if (err) return handleError(err); // todo
+      if (err) return handleError(err);
       const symbolList = symbols.map(symbolObject => symbolObject.name);
       
       Symbol.deleteOne({ name: symbol }, err => {
-        if (err) return handleError(err); // todo
+        if (err) return handleError(err);
 
         const index = symbolList.indexOf(symbol);
         symbolList.splice(index, 1);
         cb(symbolList);
       });
     });
-    
   }
 }
 

@@ -41,6 +41,11 @@ io.on('connection', socket => {
     });
   });
 
+  socket.on('error', err => {
+    console.log('Received error from user:', socket.id);
+    console.log(err);
+  })
+
   socket.on('disconnect', () => {
     console.log('User Disconnected', socket.id);
   });
