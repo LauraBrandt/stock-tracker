@@ -60,14 +60,17 @@ class StockList extends React.Component {
 
     this.setState({ busy: true });
 
-    const newSymbol = this.state.addValue;
+    const newSymbol = this.state.addValue.toUpperCase();
 
     const symbolExists = this.findSymbol(newSymbol);
-    if (symbolExists) {
+
+    if (this.props.stockSymbols.includes(newSymbol)) {
+      this.setState({ busy: false, error: `'${newSymbol}' is already displayed` });
+    } else if (!symbolExists) {
+      this.setState({ busy: false, error: "Unknown or incorrect code" });
+    } else {
       this.props.socket.emit('add', this.state.addValue);
       this.setState({ addValue: '' });
-    } else {
-      this.setState({ busy: false, error: "Unknown or incorrect code" });
     }
   }
 
@@ -77,7 +80,7 @@ class StockList extends React.Component {
   }
 
   findSymbol(symbol) {
-    return this.props.allStockSymbols.find(elem => elem.symbol === symbol.toUpperCase());
+    return this.props.allStockSymbols.find(elem => elem.symbol === symbol);
   }
 
   render() {
