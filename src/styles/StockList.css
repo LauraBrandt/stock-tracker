@@ -36,6 +36,15 @@
   font-size: 1.1em;
 }
 
+.stock__price {
+  color: hsl(240, 60%, 50%);
+  opacity: 0.8;
+  text-align: right;
+  padding-right: 3em;
+  padding-left: 2em;
+  font-size: 0.95em;
+}
+
 .stock__remove {
   background: none;
   border: none;
@@ -135,6 +144,9 @@
   .stock__name {
     font-size: 1em;
   }
+  .stock__price {
+    padding-right: 2em;
+  }
   .stock__remove {
     font-size: 1.1em;
   }
@@ -165,9 +177,14 @@
     margin: 0.5em;
   }
   .stock__symbol {
-    font-size: 1.4em;
+    font-size: 1.3em;
     padding: 0 0.7em 0 0.1em;
-    width: 40px;
+    width: 50px;
+  }
+  .stock__price {
+    padding-right: 0.5em;
+    padding-left: 0.5em;
+    font-size: 0.9em;
   }
   .stock__remove {
     font-size: 1em;

@@ -12,10 +12,13 @@ class StockList extends React.Component {
       error: '',
       addValue: '',
       stocks: {},
+      prices: {},
+      interval: null,
       busy: true
     }
 
-    this.callFetch = this.callFetch.bind(this);
+    this.callFetchCompany = this.callFetchCompany.bind(this);
+    this.callFetchPrice = this.callFetchPrice.bind(this);
     this.handleAddChange = this.handleAddChange.bind(this);
     this.addNew = this.addNew.bind(this);
     this.removeStock = this.removeStock.bind(this);
@@ -23,11 +26,21 @@ class StockList extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.stockSymbols.length > 0 && JSON.stringify(nextProps.stockSymbols) !== JSON.stringify(this.props.stockSymbols)) {
-      this.callFetch(nextProps.stockSymbols);
+      this.callFetchCompany(nextProps.stockSymbols);
+
+      // Get real-time stock prices (updated every 30s)
+      this.callFetchPrice(nextProps.stockSymbols);
+      clearInterval(this.state.interval);
+      const interval = setInterval(this.callFetchPrice.bind(null, nextProps.stockSymbols), 30000);
+      this.setState({ interval });
     }
   }
 
-  callFetch(stockSymbols) {
+  componentWillUnmount() {
+    clearInterval(this.state.interval);
+  }
+
+  callFetchCompany(stockSymbols) {
     fetch(`https://api.iextrading.com/1.0/stock/market/batch?types=company&symbols=${stockSymbols.join(',')}`)
       .then(response => response.json())
       .then(stocks => this.setState({ stocks, busy: false }))
@@ -35,6 +48,16 @@ class StockList extends React.Component {
         console.log(err);
         this.setState({ busy: false });
       });
+  }
+
+  callFetchPrice(stockSymbols) {
+    fetch(`https://api.iextrading.com/1.0/stock/market/batch?types=price&symbols=${stockSymbols.join(',')}`)
+    .then(response => response.json())
+    .then(prices => this.setState({ prices, busy: false }))
+    .catch(err => {
+      console.log(err);
+      this.setState({ busy: false });
+    });
   }
 
   handleAddChange(e) {
@@ -69,7 +92,7 @@ class StockList extends React.Component {
   }
 
   render() {
-    const { error, addValue, stocks, busy } = this.state;
+    const { error, addValue, stocks, prices, busy } = this.state;
     const { stockSymbols, colors } = this.props;
     return (
       <div className="stock-list">
@@ -80,6 +103,7 @@ class StockList extends React.Component {
                 <Stock 
                   symbol={symbol}
                   name={(stocks[symbol] && stocks[symbol].company.companyName) || ''}
+                  price={prices[symbol] && prices[symbol].price}
                   color={colors[i]}
                   handleRemove={this.removeStock}
                   disabled={busy}
