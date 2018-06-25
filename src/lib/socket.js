@@ -1,5 +1,5 @@
 const socketIo = require('socket.io');
-const symbolController = require('./src/lib/symbolController');
+const symbolController = require('./symbolController');
 
 const socketController = server => {
   const io = socketIo(server);  
