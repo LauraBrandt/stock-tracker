@@ -115,7 +115,8 @@ class StockList extends React.Component {
 
 StockList.propTypes = {
   stockSymbols: PropTypes.arrayOf(PropTypes.string),
-  colors: PropTypes.arrayOf(PropTypes.string)
+  colors: PropTypes.arrayOf(PropTypes.string),
+  allStockSymbols: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default StockList;

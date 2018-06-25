@@ -26,7 +26,9 @@ AddStock.propTypes = {
   error: PropTypes.string,
   value: PropTypes.string,
   handleChange: PropTypes.func,
-  handleSubmit: PropTypes.func
+  handleSubmit: PropTypes.func,
+  disabled: PropTypes.bool,
+  allStockSymbols: PropTypes.arrayOf(PropTypes.object)
 }; 
 
 export default AddStock;

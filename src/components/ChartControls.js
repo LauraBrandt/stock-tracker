@@ -31,7 +31,11 @@ const ChartControls = props => {
 ChartControls.propTypes = {
   periods: PropTypes.arrayOf(PropTypes.string),
   current: PropTypes.string,
-  handlePeriodChange: PropTypes.func
+  handlePeriodChange: PropTypes.func,
+  startDate: PropTypes.string,
+  endDate: PropTypes.string,
+  handleDateChange: PropTypes.func,
+  dateError: PropTypes.string
 };
 
 export default ChartControls;

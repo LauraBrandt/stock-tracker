@@ -22,8 +22,10 @@ const Stock = props => {
 Stock.propTypes = {
   symbol: PropTypes.string,
   name: PropTypes.string,
+  price: PropTypes.number,
   color: PropTypes.string,
-  handleRemove: PropTypes.func
+  handleRemove: PropTypes.func,
+  disabled: PropTypes.bool
 };
 
 export default Stock;
