@@ -140,8 +140,7 @@ class ChartContainer extends React.Component {
       startDate, 
       endDate, 
       dateError, 
-      chartData, 
-      stocks 
+      chartData
     } = this.state;
     const { stockSymbols, colors } = this.props;
 
@@ -163,7 +162,6 @@ class ChartContainer extends React.Component {
           <Chart 
             stockSymbols={stockSymbols}
             chartData={chartData}
-            stocks={stocks}
             colors={colors}
           />
         </div>

@@ -7,7 +7,7 @@ const Chart = props => {
     <ResponsiveContainer width={props.chartData.length < 150 ? '99%' : `${props.chartData.length * 1}%`} height={400} style={{margin: 'auto'}}>
       <LineChart data={props.chartData}>
         {
-          Object.keys(props.stocks).length !== 0 &&
+          props.chartData.length !== 0 &&
 
           props.stockSymbols.map((symbol, i) => 
             <Line 
@@ -57,7 +57,6 @@ const Chart = props => {
 Chart.propTypes = {
   stockSymbols: PropTypes.arrayOf(PropTypes.string),
   chartData: PropTypes.arrayOf(PropTypes.object),
-  stocks: PropTypes.object,
   colors: PropTypes.arrayOf(PropTypes.string)
 };
 
