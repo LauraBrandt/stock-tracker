@@ -43,7 +43,7 @@ class App extends React.Component {
   getColorList(symbols) {
     return symbols.map(() => {
       const hue = Math.floor(Math.random() * 256);
-      return `hsl(${hue}, 40%, 70%)`
+      return `hsl(${hue}, 50%, 70%)`
     });
   }
 
