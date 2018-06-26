@@ -8,7 +8,6 @@ const Stock = props => {
       <span className="stock__name">{props.name}</span>
       <span className="stock__price">{props.price}</span>
       <button 
-        className="stock__remove" 
         onClick={props.disabled ? e => e.preventDefault() : props.handleRemove}
         name={props.symbol}
         className={`stock__remove${props.disabled ? ' disabled' : ''}`}

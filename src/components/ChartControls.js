@@ -18,7 +18,7 @@ const ChartControls = props => {
         )}
       </div>
       <div className="chart-controls__date">
-        <div className="chart_controls__date-error">{props.dateError}</div>
+        <div className="chart-controls__date-error">{props.dateError}</div>
         <label htmlFor="from">From:</label>
         <input type="date" id="from" value={props.startDate} onChange={props.handleDateChange}/>
         <label htmlFor="to">To:</label>
