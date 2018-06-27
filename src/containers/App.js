@@ -3,8 +3,7 @@ import ChartContainer from './ChartContainer';
 import StockList from './StockList';
 import '../styles/App.css';
 import io from "socket.io-client";
-
-// import { stockSymbols } from '../data';
+import { serverUrl } from '../config';
 
 class App extends React.Component {
   constructor() {
@@ -13,9 +12,11 @@ class App extends React.Component {
       allStockSymbols: [],
       stockSymbols: [],
       colors: [],
-      socket: io('Lauras-MacBook-Pro.local:3001')
+      socket: null,
+      error: ''
     }
 
+    this.startSocket = this.startSocket.bind(this);
     this.fetchSymbolList = this.fetchSymbolList.bind(this);
     this.getColorList = this.getColorList.bind(this);
   }
@@ -23,9 +24,12 @@ class App extends React.Component {
   componentDidMount() {
     this.fetchSymbolList();
 
-    this.state.socket.emit('get', null);
+    const socket = this.startSocket(io);
+    this.setState({ socket });
 
-    this.state.socket.on("symbolList", stockSymbols => {
+    socket.emit('get', null);
+
+    socket.on("symbolList", stockSymbols => {
       if (stockSymbols.length > 0) {
         const colors = this.getColorList(stockSymbols);
         this.setState({ stockSymbols, colors });
@@ -33,11 +37,15 @@ class App extends React.Component {
     });
   }
 
+  startSocket(io) {
+    return io(serverUrl);
+  }
+
   fetchSymbolList() {
-    fetch('https://api.iextrading.com/1.0/ref-data/symbols')
+    return fetch('https://api.iextrading.com/1.0/ref-data/symbols')
       .then(response => response.json())
       .then(allStockSymbols => this.setState({ allStockSymbols }))
-      .catch(err => console.log(err));
+      .catch(err => this.setState({ error: err.message }));
   }
 
   getColorList(symbols) {
