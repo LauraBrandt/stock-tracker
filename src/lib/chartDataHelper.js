@@ -1,16 +1,16 @@
-const pad = num => {
+export const pad = num => {
   if (num < 10) {
     return `0${num}`;
   }
   return num;
 }
 
-const formatDate = date => {
+export const formatDate = date => {
   return`${date.getUTCFullYear()}-${pad(date.getUTCMonth() + 1)}-${pad(date.getUTCDate())}`
 }
 
 export const getDateRange = period => {
-  const endDate = new Date();
+  const endDate = new Date(Date.now());
   let startDate = new Date(endDate);
 
   const unit = period.slice(1);
@@ -32,7 +32,7 @@ export const getDateRange = period => {
 }
 
 export const getDatePeriod = (startDate) => {
-  const now = new Date();
+  const now = new Date(Date.now());
   const start = new Date(startDate);
 
   const compareDate = new Date(now);
@@ -56,17 +56,17 @@ export const getDatePeriod = (startDate) => {
   compareDate.setFullYear(now.getFullYear());
   compareDate.setMonth((now.getMonth() - 3) % 12); // three months ago
   if (start.getTime() < compareDate.getTime() && formatDate(compareDate) !== formatDate(start)) {
-      return '6m';
+    return '6m';
   }
 
   compareDate.setFullYear(now.getFullYear());
   compareDate.setMonth((now.getMonth() - 1) % 12);
   if (start.getTime() < compareDate.getTime() && formatDate(compareDate) !== formatDate(start)) {
-      return '3m';
+    return '3m';
   }
 
-      return '1m';
-    }
+  return '1m';
+}
 
 export const validateDate = (id, value, start, end) => {
   const startDate = new Date(start);
