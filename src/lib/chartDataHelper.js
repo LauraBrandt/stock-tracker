@@ -1,7 +1,3 @@
-const msInYear = 31556952000;
-const msInMonth = 2592000;
-const msInDay = 86400000;
-
 const pad = num => {
   if (num < 10) {
     return `0${num}`;
@@ -28,6 +24,8 @@ export const getDateRange = period => {
   } else if (unit === 'm') {
     const month = (startDate.getMonth() - amount) % 12;
     startDate.setMonth(month);
+  } else {
+    return Error('Invalid period');
   }
 
   return [formatDate(startDate), formatDate(endDate)];
@@ -37,27 +35,38 @@ export const getDatePeriod = (startDate) => {
   const now = new Date();
   const start = new Date(startDate);
 
-  const diff = Math.abs(now - start);
-  let years = diff / msInYear;
-  if (years > 2) {
+  const compareDate = new Date(now);
+
+  compareDate.setFullYear(now.getFullYear() - 2); // two years ago
+  if (start.getTime() < compareDate.getTime() && formatDate(compareDate) !== formatDate(start)) {
     return '5y';
-  } else if (years > 1) {
+  }
+
+  compareDate.setFullYear(now.getFullYear() - 1); // one year ago
+  if (start.getTime() < compareDate.getTime() && formatDate(compareDate) !== formatDate(start)) {
     return '2y';
-  } else if (years === 1) {
+  }
+
+  compareDate.setFullYear(now.getFullYear());
+  compareDate.setMonth((now.getMonth() - 6) % 12); // six months ago
+  if (start.getTime() < compareDate.getTime() && formatDate(compareDate) !== formatDate(start)) {
     return '1y';
-  } else {
-    const months = Math.floor(diff / msInMonth);
-    if (months > 6) {
-      return '1y';
-    } else if (months > 3) {
+  }
+
+  compareDate.setFullYear(now.getFullYear());
+  compareDate.setMonth((now.getMonth() - 3) % 12); // three months ago
+  if (start.getTime() < compareDate.getTime() && formatDate(compareDate) !== formatDate(start)) {
       return '6m';
-    } else if (months > 1) {
+  }
+
+  compareDate.setFullYear(now.getFullYear());
+  compareDate.setMonth((now.getMonth() - 1) % 12);
+  if (start.getTime() < compareDate.getTime() && formatDate(compareDate) !== formatDate(start)) {
       return '3m';
-    } else {
+  }
+
       return '1m';
     }
-  }
-}
 
 export const validateDate = (id, value, start, end) => {
   const startDate = new Date(start);
@@ -65,7 +74,7 @@ export const validateDate = (id, value, start, end) => {
   const valueDate = new Date(value);
 
   // valid date format
-  if (valueDate === 'Invalid Date') {
+  if (valueDate == 'Invalid Date') {
     return {
       success: false,
       error: 'Value must be a date'
@@ -81,7 +90,10 @@ export const validateDate = (id, value, start, end) => {
   }
 
   // start date is no more than 5 years ago
-  if (id === 'from' && valueDate.getTime() + (5*msInYear) < Date.now()) {
+  const now = new Date(Date.now());
+  const fiveYearsAgo = new Date(now);
+  fiveYearsAgo.setFullYear(now.getFullYear() - 5);
+  if (id === 'from' && valueDate.getTime() < fiveYearsAgo.getTime() && formatDate(valueDate) !== formatDate(fiveYearsAgo)) {
     return {
       success: false,
       error: "Start date must be within the last 5 years"
@@ -101,6 +113,7 @@ export const validateDate = (id, value, start, end) => {
 }
 
 export const getChartData = (symbols, stocks, startDate, endDate) => {
+  const msInDay = 86400000;
   let stockData = [];
 
   // create list of objects for each date in date range
