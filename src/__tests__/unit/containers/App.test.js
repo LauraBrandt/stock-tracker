@@ -222,7 +222,7 @@ describe('App', () => {
 
         wrapper.instance().startSocket(mockIo);
 
-        expect(mockIo).toHaveBeenCalledWith(process.env.REACT_APP_SERVER_URL);
+        expect(mockIo).toHaveBeenCalledWith('https://lb-stock-tracker.herokuapp.com/');
       });
     });
   });
