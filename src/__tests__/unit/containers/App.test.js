@@ -4,9 +4,8 @@ import fetchMock from 'fetch-mock';
 import App from '../../../containers/App';
 import ChartContainer from '../../../containers/ChartContainer';
 import StockList from '../../../containers/StockList';
-import { serverUrl } from '../../../config';
 
-describe.skip('App', () => {
+describe('App', () => {
   const allStocks = [
     {
       "symbol": "A",
@@ -223,7 +222,7 @@ describe.skip('App', () => {
 
         wrapper.instance().startSocket(mockIo);
 
-        expect(mockIo).toHaveBeenCalledWith(serverUrl);
+        expect(mockIo).toHaveBeenCalledWith(process.env.REACT_APP_SERVER_URL);
       });
     });
   });

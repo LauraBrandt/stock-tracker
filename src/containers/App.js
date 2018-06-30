@@ -3,7 +3,6 @@ import ChartContainer from './ChartContainer';
 import StockList from './StockList';
 import '../styles/App.css';
 import io from "socket.io-client";
-import { serverUrl } from '../config';
 
 class App extends React.Component {
   constructor() {
@@ -38,7 +37,7 @@ class App extends React.Component {
   }
 
   startSocket(io) {
-    return io(serverUrl);
+    return io(process.env.REACT_APP_SERVER_URL);
   }
 
   fetchSymbolList() {
