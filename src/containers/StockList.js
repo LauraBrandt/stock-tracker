@@ -42,11 +42,11 @@ class StockList extends React.Component {
 
   callFetchPrice(stockSymbols) {
     return fetch(`https://api.iextrading.com/1.0/stock/market/batch?types=price&symbols=${stockSymbols.join(',')}`)
-    .then(response => response.json())
-    .then(prices => this.setState({ prices }))
-    .catch(err => {
+      .then(response => response.json())
+      .then(prices => this.setState({ prices }))
+      .catch(err => {
         this.setState({ busy: false, fetchError: err.message });
-    });
+      });
   }
 
   handleAddChange(e) {
@@ -63,13 +63,13 @@ class StockList extends React.Component {
     const newSymbol = this.state.addValue.toUpperCase();
 
     const symbolExists = this.findSymbol(newSymbol);
-
+    
     if (this.props.stockSymbols.includes(newSymbol)) {
       this.setState({ busy: false, error: `'${newSymbol}' is already displayed` });
     } else if (!symbolExists) {
       this.setState({ busy: false, error: "Unknown or incorrect code" });
     } else {
-      this.props.socket.emit('add', this.state.addValue);
+      this.props.socket.emit('add', newSymbol);
       this.setState({ addValue: '' });
     }
   }
@@ -88,20 +88,20 @@ class StockList extends React.Component {
     const { stockSymbols, colors, allStockSymbols } = this.props;
     return (
       <div className="stock-list">
-        <div>
+        <ul>
           { stockSymbols.map((symbol, i) => 
             <li className="stock__li" key={symbol}>
               <Stock 
                 symbol={symbol}
                 name={(this.findSymbol(symbol) && this.findSymbol(symbol).name) || ''}
-                price={prices[symbol] && prices[symbol].price}
+                price={(prices[symbol] && prices[symbol].price) || null}
                 color={colors[i]}
                 handleRemove={this.removeStock}
                 disabled={busy}
               />
             </li>
           )}
-        </div>
+        </ul>
         { stockSymbols.length < 100 &&
           <AddStock 
             error={error}

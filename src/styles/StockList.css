@@ -4,6 +4,11 @@
   box-sizing: border-box;
 }
 
+.stock-list ul {
+  margin: 0;
+  padding: 0
+}
+
 .stock__li {
   list-style-type: none;
 }
