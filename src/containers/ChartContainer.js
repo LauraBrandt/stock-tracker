@@ -17,12 +17,18 @@ class ChartContainer extends React.Component {
       startDate: '',
       endDate: '',
       dateError: '',
-      chartData: []
+      chartData: [],
+      fetchError: ''
     }
 
     this.callFetch = this.callFetch.bind(this);
     this.handlePeriodChange = this.handlePeriodChange.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
+
+    this.getDateRange = getDateRange;
+    this.validateDate = validateDate;
+    this.getDatePeriod = getDatePeriod;
+    this.getChartData = getChartData;
   }
 
   componentDidMount() {
@@ -31,7 +37,7 @@ class ChartContainer extends React.Component {
     let endDate = sessionStorage.getItem('endDate');
 
     if (currentPeriod) {
-      [startDate, endDate] = getDateRange(currentPeriod);
+      [startDate, endDate] = this.getDateRange(currentPeriod);
       this.setState({ 
         currentPeriod,
         startDate,
@@ -44,7 +50,7 @@ class ChartContainer extends React.Component {
         endDate
       });
     } else {
-      const [startDate, endDate] = getDateRange(this.state.currentPeriod);
+      const [startDate, endDate] = this.getDateRange(this.state.currentPeriod);
       this.setState({ startDate, endDate });
     }
   }
@@ -54,10 +60,10 @@ class ChartContainer extends React.Component {
       let period = sessionStorage.getItem('period');
       const startDate = sessionStorage.getItem('startDate');
       const endDate = sessionStorage.getItem('endDate');
-  
+      
       if (!period) {
         if (startDate && endDate) {
-          period = getDatePeriod(startDate);
+          period = this.getDatePeriod(startDate);
         } else {
           period = this.state.currentPeriod;
         }
@@ -68,24 +74,24 @@ class ChartContainer extends React.Component {
   }
 
   callFetch(stockSymbols, period) {
-    fetch(`https://api.iextrading.com/1.0/stock/market/batch?types=chart&range=${period}&symbols=${stockSymbols.join(',')}`)
-    .then(response => response.json())
-    .then(stocks => {
-      const chartData = getChartData(stockSymbols, stocks, this.state.startDate, this.state.endDate);
-      this.setState({ 
-        stocks,
-        chartData
-      });
-      if (period.slice(1) === 'y') {
-        this.refs.chart.scrollLeft = this.refs.chart.scrollWidth;
-      }
-    })
-      .catch(err => console.log(err));
+    return fetch(`https://api.iextrading.com/1.0/stock/market/batch?types=chart&range=${period}&symbols=${stockSymbols.join(',')}`)
+      .then(response => response.json())
+      .then(stocks => {
+        const chartData = this.getChartData(stockSymbols, stocks, this.state.startDate, this.state.endDate);
+        this.setState({ 
+          stocks,
+          chartData
+        });
+        if (period.slice(1) === 'y') {
+          this.refs.chart.scrollLeft = this.refs.chart.scrollWidth;
+        }
+      })
+      .catch(err => this.setState({ fetchError: err.message }));
   }
 
   handlePeriodChange(e) {
     const currentPeriod = e.target.name;
-    const [startDate, endDate] = getDateRange(currentPeriod);
+    const [startDate, endDate] = this.getDateRange(currentPeriod);
 
     sessionStorage.setItem('period', currentPeriod);
     sessionStorage.setItem('startDate', '');
@@ -101,7 +107,7 @@ class ChartContainer extends React.Component {
   }
 
   handleDateChange(e) {
-    const validation = validateDate(e.target.id, e.target.value, this.state.startDate, this.state.endDate);
+    const validation = this.validateDate(e.target.id, e.target.value, this.state.startDate, this.state.endDate);
 
     if (validation.error) {
       this.setState({ dateError: validation.error });
@@ -116,7 +122,7 @@ class ChartContainer extends React.Component {
       sessionStorage.setItem('period', '');
       
       this.setState({ startDate: e.target.value, currentPeriod: '' });
-      const relevantPeriod = getDatePeriod(e.target.value);
+      const relevantPeriod = this.getDatePeriod(e.target.value);
       this.callFetch(this.props.stockSymbols, relevantPeriod);
 
     } else if (e.target.id === 'to') {
@@ -124,13 +130,13 @@ class ChartContainer extends React.Component {
       sessionStorage.setItem('endDate', e.target.value);
       sessionStorage.setItem('period', '');
       
-      const chartData = getChartData(this.props.stockSymbols, this.state.stocks, this.state.startDate, e.target.value);
+      const chartData = this.getChartData(this.props.stockSymbols, this.state.stocks, this.state.startDate, e.target.value);
       this.setState({
         endDate: e.target.value, 
         currentPeriod: '',
         chartData
       });
-    }  
+    }
   }
 
   render() {
@@ -156,7 +162,6 @@ class ChartContainer extends React.Component {
           handleDateChange={this.handleDateChange}
           dateError={dateError}
         />
-
 
         <div className="chart-container__chart" ref="chart">
           <Chart 

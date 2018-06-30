@@ -27,5 +27,14 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "fetch-mock": "^6.4.4",
     "nodemon": "^1.17.5"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!<rootDir>/node_modules/",
+      "!src/registerServiceWorker.js",
+      "!src/data.js",
+      "!src/index.js"
+    ]
   }
 }

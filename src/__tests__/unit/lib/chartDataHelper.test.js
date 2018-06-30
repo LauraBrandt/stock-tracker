@@ -1,4 +1,4 @@
-import * as cdh from '../../lib/chartDataHelper';
+import * as cdh from '../../../lib/chartDataHelper';
 
 describe('pad', () => {
   it('returns the number if >= 10', () => {

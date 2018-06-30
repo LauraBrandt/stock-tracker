@@ -13,7 +13,8 @@ class StockList extends React.Component {
       addValue: '',
       prices: {},
       interval: null,
-      busy: true
+      busy: true,
+      fetchError: ''
     }
 
     this.callFetchPrice = this.callFetchPrice.bind(this);
@@ -40,12 +41,11 @@ class StockList extends React.Component {
   }
 
   callFetchPrice(stockSymbols) {
-    fetch(`https://api.iextrading.com/1.0/stock/market/batch?types=price&symbols=${stockSymbols.join(',')}`)
+    return fetch(`https://api.iextrading.com/1.0/stock/market/batch?types=price&symbols=${stockSymbols.join(',')}`)
     .then(response => response.json())
     .then(prices => this.setState({ prices }))
     .catch(err => {
-      console.log(err);
-      this.setState({ busy: false });
+        this.setState({ busy: false, fetchError: err.message });
     });
   }
 
